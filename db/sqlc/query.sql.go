@@ -13,22 +13,24 @@ import (
 
 const createInventory = `-- name: CreateInventory :one
 INSERT INTO inventory (
-    price, currency, stock, updated_at
+    product_name, price, currency, stock, updated_at
 ) VALUES (
-  $1, $2, $3, $4
+  $1, $2, $3, $4, $5
 )
-RETURNING product_id, price, currency, stock, updated_at
+RETURNING product_id, product_name, price, currency, stock, updated_at
 `
 
 type CreateInventoryParams struct {
-	Price     pgtype.Numeric     `json:"price"`
-	Currency  string             `json:"currency"`
-	Stock     int32              `json:"stock"`
-	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
+	ProductName string             `json:"product_name"`
+	Price       pgtype.Numeric     `json:"price"`
+	Currency    string             `json:"currency"`
+	Stock       int32              `json:"stock"`
+	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
 }
 
 func (q *Queries) CreateInventory(ctx context.Context, arg CreateInventoryParams) (Inventory, error) {
 	row := q.db.QueryRow(ctx, createInventory,
+		arg.ProductName,
 		arg.Price,
 		arg.Currency,
 		arg.Stock,
@@ -37,6 +39,7 @@ func (q *Queries) CreateInventory(ctx context.Context, arg CreateInventoryParams
 	var i Inventory
 	err := row.Scan(
 		&i.ProductID,
+		&i.ProductName,
 		&i.Price,
 		&i.Currency,
 		&i.Stock,
@@ -56,7 +59,7 @@ func (q *Queries) DeleteInventory(ctx context.Context, productID int32) error {
 }
 
 const getInventory = `-- name: GetInventory :one
-SELECT product_id, price, currency, stock, updated_at FROM inventory
+SELECT product_id, product_name, price, currency, stock, updated_at FROM inventory
 WHERE product_id = $1 LIMIT 1
 `
 
@@ -65,6 +68,7 @@ func (q *Queries) GetInventory(ctx context.Context, productID int32) (Inventory,
 	var i Inventory
 	err := row.Scan(
 		&i.ProductID,
+		&i.ProductName,
 		&i.Price,
 		&i.Currency,
 		&i.Stock,
@@ -74,7 +78,7 @@ func (q *Queries) GetInventory(ctx context.Context, productID int32) (Inventory,
 }
 
 const listInventory = `-- name: ListInventory :many
-SELECT product_id, price, currency, stock, updated_at FROM inventory
+SELECT product_id, product_name, price, currency, stock, updated_at FROM inventory
 ORDER BY product_id
 `
 
@@ -89,6 +93,7 @@ func (q *Queries) ListInventory(ctx context.Context) ([]Inventory, error) {
 		var i Inventory
 		if err := rows.Scan(
 			&i.ProductID,
+			&i.ProductName,
 			&i.Price,
 			&i.Currency,
 			&i.Stock,

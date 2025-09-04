@@ -1,7 +1,15 @@
--- name: CreateOrder :one
-INSERT INTO orders (product_id, quantity, status, created_at)
-VALUES ($1, $2, $3, $4)
-RETURNING *;
+-- name: CreateOrderByProducName :one
+INSERT INTO orders (
+    product_id, quantity, total, status
+)
+SELECT 
+    i.product_id,
+    $2::int,
+    i.price * $2::numeric,
+    'pending'
+FROM inventory i
+WHERE i.product_name = $1
+RETURNING *; 
 
 -- name: GetOrder :one
 SELECT * FROM orders WHERE id = $1 LIMIT 1;

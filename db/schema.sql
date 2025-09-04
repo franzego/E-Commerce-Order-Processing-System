@@ -1,5 +1,6 @@
 CREATE TABLE inventory (
   product_id serial PRIMARY KEY,
+  product_name varchar(255) NOT NULL UNIQUE,
   price numeric(12,2) NOT NULL CHECK (price >= 0),
   currency varchar(4) NOT NULL,
   stock int NOT NULL CHECK (stock >= 0),

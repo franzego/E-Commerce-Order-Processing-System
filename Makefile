@@ -8,10 +8,10 @@ dropdb:
 	docker exec -it postgres13 dropdb -U franz ecommerce
 
 migrateup:
-	docker exec -it postgres13 migrate -path /app/db/migration -database "postgresql://franz:Franzego@1@localhost:5433/ecommerce?sslmode=disable" -verbose up
+	docker exec -it postgres13 migrate -path /db/migration -database "postgresql://franz:Franzego@1@localhost:5433/new?sslmode=disable" -verbose up
 
 migratedown:
-	docker exec -it postgres13 migrate -path /app/db/migration -database "postgresql://franz:Franzego@1@localhost:5433/ecommerce?sslmode=disable" -verbose down
+	docker exec -it postgres13 migrate -path /db/migration -database "postgresql://franz:Franzego@1@localhost:5433/new?sslmode=disable" -verbose down
 
 sqlc:
 	sqlc generate

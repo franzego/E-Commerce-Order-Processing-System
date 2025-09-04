@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 )
@@ -32,4 +33,10 @@ func RandomFloat(min, max float64) float64 {
 // Generate random int between min and max
 func RandomInt(min, max int) int {
 	return min + rand.Intn(max-min+1)
+}
+
+// Generate random productnames
+func RandomName() string {
+	return fmt.Sprintf("TestProduct-%d", time.Now().UnixNano())
+
 }

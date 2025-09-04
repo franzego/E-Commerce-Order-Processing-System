@@ -7,30 +7,29 @@ package db
 
 import (
 	"context"
-
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
-const createOrder = `-- name: CreateOrder :one
-INSERT INTO orders (product_id, quantity, status, created_at)
-VALUES ($1, $2, $3, $4)
+const createOrderByProducName = `-- name: CreateOrderByProducName :one
+INSERT INTO orders (
+    product_id, quantity, total, status
+)
+SELECT 
+    i.product_id,
+    $2::int,
+    i.price * $2::numeric,
+    'pending'
+FROM inventory i
+WHERE i.product_name = $1
 RETURNING id, product_id, quantity, total, status, created_at
 `
 
-type CreateOrderParams struct {
-	ProductID int32              `json:"product_id"`
-	Quantity  int32              `json:"quantity"`
-	Status    string             `json:"status"`
-	CreatedAt pgtype.Timestamptz `json:"created_at"`
+type CreateOrderByProducNameParams struct {
+	ProductName string `json:"product_name"`
+	Column2     int32  `json:"column_2"`
 }
 
-func (q *Queries) CreateOrder(ctx context.Context, arg CreateOrderParams) (Order, error) {
-	row := q.db.QueryRow(ctx, createOrder,
-		arg.ProductID,
-		arg.Quantity,
-		arg.Status,
-		arg.CreatedAt,
-	)
+func (q *Queries) CreateOrderByProducName(ctx context.Context, arg CreateOrderByProducNameParams) (Order, error) {
+	row := q.db.QueryRow(ctx, createOrderByProducName, arg.ProductName, arg.Column2)
 	var i Order
 	err := row.Scan(
 		&i.ID,

@@ -8,9 +8,9 @@ ORDER BY product_id;
 
 -- name: CreateInventory :one
 INSERT INTO inventory (
-    price, currency, stock, updated_at
+    product_name, price, currency, stock, updated_at
 ) VALUES (
-  $1, $2, $3, $4
+  $1, $2, $3, $4, $5
 )
 RETURNING *;
 

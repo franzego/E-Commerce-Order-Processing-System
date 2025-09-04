@@ -9,11 +9,12 @@ import (
 )
 
 type Inventory struct {
-	ProductID int32              `json:"product_id"`
-	Price     pgtype.Numeric     `json:"price"`
-	Currency  string             `json:"currency"`
-	Stock     int32              `json:"stock"`
-	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
+	ProductID   int32              `json:"product_id"`
+	ProductName string             `json:"product_name"`
+	Price       pgtype.Numeric     `json:"price"`
+	Currency    string             `json:"currency"`
+	Stock       int32              `json:"stock"`
+	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
 }
 
 type Order struct {
