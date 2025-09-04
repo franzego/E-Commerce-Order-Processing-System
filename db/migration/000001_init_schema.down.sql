@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS inventory;
+DROP TABLE IF EXISTS orders;    
+DROP TABLE IF EXISTS orders_products;
+DROP TABLE IF EXISTS orders_products_inventory;
+DROP TABLE IF EXISTS orders_products_inventory_users;
+DROP TABLE IF EXISTS orders_products_inventory_users_products;
+DROP TABLE IF EXISTS orders_products_inventory_users_products_categories;
+DROP TABLE IF EXISTS orders_products_inventory_users_products_categories_orders;
+DROP TABLE IF EXISTS orders_products_inventory_users_products_categories_orders_products;
