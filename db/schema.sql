@@ -5,3 +5,12 @@ CREATE TABLE inventory (
   stock int NOT NULL CHECK (stock >= 0),
   updated_at timestamptz DEFAULT now()
 );
+
+CREATE TABLE orders (
+  id serial PRIMARY KEY,
+  product_id int NOT NULL REFERENCES inventory(product_id),
+  quantity int NOT NULL CHECK (quantity > 0),
+  total numeric(12,2),
+  status varchar(20) NOT NULL DEFAULT 'pending',
+  created_at timestamptz DEFAULT now()
+);

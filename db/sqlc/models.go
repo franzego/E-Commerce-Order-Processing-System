@@ -15,3 +15,12 @@ type Inventory struct {
 	Stock     int32              `json:"stock"`
 	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
 }
+
+type Order struct {
+	ID        int32              `json:"id"`
+	ProductID int32              `json:"product_id"`
+	Quantity  int32              `json:"quantity"`
+	Total     pgtype.Numeric     `json:"total"`
+	Status    string             `json:"status"`
+	CreatedAt pgtype.Timestamptz `json:"created_at"`
+}
