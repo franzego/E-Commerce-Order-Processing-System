@@ -4,6 +4,7 @@ sql:
     queries: 
       - "db/query.sql"
       - "db/orders.sql"
+      - "db/users.sql"
     schema: "db/schema.sql"
     gen:
       go:
